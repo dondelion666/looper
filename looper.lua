@@ -17,7 +17,15 @@ end
 for i=1,4 do
   params:add_separator("setup_separator"..i,"voice "..i)
   params:add_number("input_channel"..i,"input channel"..i,1,2,1)
-  params:set_action("input_channel"..i,function(x) softcut.level_input_cut(x,i,params:get("input_lvl"..i)) end)
+  params:set_action("input_channel"..i,
+    function(x) 
+      softcut.level_input_cut(x,i,params:get("input_lvl"..i)) 
+        if x==1 then
+          softcut.level_input_cut(2,i,0)
+        elseif x==2 then
+          softcut.level_input_cut(1,i,0)
+        end
+    end)
   params:add_control("input_lvl"..i,"input_lvl"..i,controlspec.new(0,1,'lin',0.01,0,'',0.01))
   params:set_action("input_lvl"..i,function(x) softcut.level_input_cut(params:get("input_channel"..i),i,x) end)
   params:add_binary("play"..i,"play"..i,"toggle",0)
